@@ -10,6 +10,7 @@ const AWS_S3_CONFIG = {
 };
 
 const Bucket = 'workly-images';
+const baseUrl = 'https://workly-images.s3.amazonaws.com/';
 const originalPath = 'avatars/original/';
 const thumbPath = 'avatars/thumb/';
 
@@ -38,12 +39,16 @@ exports.getOriginalPath = () => {
   return originalPath;
 };
 
-exports.deleteAvatar = async avatar => {
-  console.log('avatar:', avatar);
+exports.getAvatarUrl = filename => {
+  return baseUrl + thumbPath + filename;
+};
+
+exports.deleteAvatar = async filename => {
+  console.log('filename:', filename);
   try {
     const s3 = createS3Instance();
-    await deleteFile(s3, `${originalPath}${avatar}`);
-    await deleteFile(s3, `${thumbPath}${avatar}`);
+    await deleteFile(s3, `${originalPath}${filename}`);
+    await deleteFile(s3, `${thumbPath}${filename}`);
   } catch (error) {
     console.log(error);
   }

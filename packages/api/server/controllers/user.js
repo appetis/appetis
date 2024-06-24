@@ -250,10 +250,10 @@ exports.updateAvatar = async (req, res) => {
     const { avatar } = profile;
     console.log('userId:', userId, ', avatar:', avatar);
     if (avatar) {
-      await s3Service.deleteAvatar(avatar);
+      await s3Service.deleteAvatar(avatar.substring(avatar.lastIndexOf('/') + 1));
     }
 
-    await profile.update({ avatar: filename });
+    await profile.update({ avatar: s3Service.getAvatarUrl(filename) });
 
     return res.status(200).json({
       code: 200,
